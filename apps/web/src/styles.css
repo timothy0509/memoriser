@@ -610,6 +610,141 @@ select.textlike {
   gap: 10px;
   flex-wrap: wrap;
 }
+.paper-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.paper {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 30px 34px;
+}
+.paper-head {
+  text-align: center;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+.paper-title {
+  font-size: 26px;
+  letter-spacing: 8px;
+  font-weight: 700;
+}
+.paper-sub {
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-top: 4px;
+}
+.paper-fields {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.paper-hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+.paper-para {
+  margin-top: 18px;
+}
+.paper-para-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.paper-count {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 13px;
+}
+.paper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+  gap: 5px;
+}
+.paper-grid .cell {
+  aspect-ratio: 1;
+  border: 1.5px solid var(--ink-soft);
+  border-radius: 3px;
+  background:
+    linear-gradient(
+      to right,
+      transparent calc(50% - 0.5px),
+      #cfc6ae calc(50% - 0.5px),
+      #cfc6ae calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(50% - 0.5px),
+      #cfc6ae calc(50% - 0.5px),
+      #cfc6ae calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    #fff;
+}
+.paper-grid .cell.filled {
+  background: var(--paper-2);
+  border-color: var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 25px;
+  line-height: 1;
+  color: var(--ink);
+}
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  .topbar,
+  .foot,
+  .paper-toolbar,
+  .toast {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .paper {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+  .paper-para {
+    break-inside: avoid;
+  }
+  .paper-grid {
+    grid-template-columns: repeat(20, 1fr);
+    gap: 1.2mm;
+  }
+  .paper-grid .cell {
+    border-width: 0.4mm;
+  }
+  .paper-grid .cell.filled {
+    font-size: 14pt;
+  }
+}
 @media (max-width: 640px) {
   .topbar {
     padding: 10px 12px;

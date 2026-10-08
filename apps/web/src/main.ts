@@ -12,6 +12,7 @@ import {
   viewStudy,
 } from './views.ts';
 import { stopSpeech } from './tts.ts';
+import { viewPaper } from './paper.ts';
 
 uiBridge.toast = toast;
 
@@ -30,30 +31,36 @@ function render(): void {
   );
   const h = location.hash || '#/';
   const app = document.getElementById('app')!;
-  const m = h.match(/^#\/t\/([^?]+)(?:\?(.*))?$/);
-  if (m) {
-    const q = Object.fromEntries(new URLSearchParams(m[2] || ''));
+  const pm = h.match(/^#\/t\/([^/?]+)\/paper$/);
+  if (pm) {
     setNav('lib');
-    viewStudy(app, {
-      tid: decodeURIComponent(m[1]),
-      chunk: Math.max(0, +q.chunk || 0),
-      stage: q.stage || 'read',
-    });
-  } else if (h.startsWith('#/lib')) {
-    setNav('lib');
-    viewLib(app);
-  } else if (h.startsWith('#/review')) {
-    setNav('home');
-    viewReview(app);
-  } else if (h.startsWith('#/errors')) {
-    setNav('errors');
-    viewErrors(app);
-  } else if (h.startsWith('#/settings')) {
-    setNav('settings');
-    viewSettings(app);
+    viewPaper(app, decodeURIComponent(pm[1]));
   } else {
-    setNav('home');
-    viewHome(app);
+    const m = h.match(/^#\/t\/([^?]+)(?:\?(.*))?$/);
+    if (m) {
+      const q = Object.fromEntries(new URLSearchParams(m[2] || ''));
+      setNav('lib');
+      viewStudy(app, {
+        tid: decodeURIComponent(m[1]),
+        chunk: Math.max(0, +q.chunk || 0),
+        stage: q.stage || 'read',
+      });
+    } else if (h.startsWith('#/lib')) {
+      setNav('lib');
+      viewLib(app);
+    } else if (h.startsWith('#/review')) {
+      setNav('home');
+      viewReview(app);
+    } else if (h.startsWith('#/errors')) {
+      setNav('errors');
+      viewErrors(app);
+    } else if (h.startsWith('#/settings')) {
+      setNav('settings');
+      viewSettings(app);
+    } else {
+      setNav('home');
+      viewHome(app);
+    }
   }
   window.scrollTo(0, 0);
 }
