@@ -2,11 +2,17 @@ import { dictationOf, writableCount } from '@memoriser/core';
 import { allTexts, getText } from './texts.ts';
 import { $, esc, go } from './views.ts';
 
-export function paperURL(tid: string): string {
-  return '#/t/' + tid + '/paper';
+export type PaperMode = 'blank' | 'key';
+
+export function paperURL(tid: string, mode: PaperMode = 'blank'): string {
+  return '#/t/' + tid + (mode === 'key' ? '/key' : '/paper');
 }
 
-export function viewPaper(app: HTMLElement, tid: string): void {
+export function viewPaper(
+  app: HTMLElement,
+  tid: string,
+  mode: PaperMode = 'blank'
+): void {
   const texts = allTexts();
   const t = getText(tid) || texts[0];
   if (!t) {
@@ -21,6 +27,12 @@ export function viewPaper(app: HTMLElement, tid: string): void {
     '<div class="paper-toolbar rise">' +
     '<div class="btn-row" style="margin:0">' +
     '<button class="btn small" id="paperBack">← 返去背誦</button>' +
+    '<button class="btn small" id="paperBlank"' +
+    (mode === 'blank' ? ' disabled' : '') +
+    '>默書紙</button>' +
+    '<button class="btn small" id="paperKey"' +
+    (mode === 'key' ? ' disabled' : '') +
+    '>答案</button>' +
     '<button class="btn primary small" id="paperPrint">列印 / 存為 PDF</button>' +
     '</div>' +
     '<div class="controls" style="margin:0"><label>篇章 <select class="textlike" id="paperPick" style="width:auto;max-width:260px">' +
@@ -49,7 +61,8 @@ export function viewPaper(app: HTMLElement, tid: string): void {
     '</div>' +
     '<div class="paper-sub">' +
     esc([t.group, t.author, t.note].filter(Boolean).join('．')) +
-    '．默書紙</div>' +
+    (mode === 'key' ? '．答案' : '．默書紙') +
+    '</div>' +
     '<div class="paper-fields"><span>姓名：＿＿＿＿</span><span>班別：＿＿＿＿</span><span>日期：＿＿＿＿</span><span>分數：＿＿＿＿</span></div>' +
     '</header>';
 
@@ -62,9 +75,12 @@ export function viewPaper(app: HTMLElement, tid: string): void {
       n +
       '字</span></div><div class="paper-grid">';
     for (const c of p.cells) {
-      html += c.write
-        ? '<span class="cell"></span>'
-        : '<span class="cell filled">' + esc(c.ch) + '</span>';
+      html +=
+        c.write && mode !== 'key'
+          ? '<span class="cell"></span>'
+          : c.write
+            ? '<span class="cell answer">' + esc(c.ch) + '</span>'
+            : '<span class="cell filled">' + esc(c.ch) + '</span>';
     }
     html += '</div></section>';
   });
@@ -75,6 +91,10 @@ export function viewPaper(app: HTMLElement, tid: string): void {
   ($('#paperBack') as HTMLButtonElement).onclick = () =>
     go('#/t/' + t.id + '?chunk=0&stage=read');
   ($('#paperPrint') as HTMLButtonElement).onclick = () => window.print();
+  ($('#paperBlank') as HTMLButtonElement).onclick = () =>
+    go(paperURL(t.id, 'blank'));
+  ($('#paperKey') as HTMLButtonElement).onclick = () =>
+    go(paperURL(t.id, 'key'));
   ($('#paperPick') as HTMLSelectElement).onchange = (e) =>
-    go(paperURL((e.target as HTMLSelectElement).value));
+    go(paperURL((e.target as HTMLSelectElement).value, mode));
 }

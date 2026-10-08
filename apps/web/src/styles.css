@@ -701,8 +701,17 @@ select.textlike {
   height: 1px;
 }
 .paper-grid .cell.filled::before,
-.paper-grid .cell.filled::after {
+.paper-grid .cell.filled::after,
+.paper-grid .cell.answer::before,
+.paper-grid .cell.answer::after {
   display: none;
+}
+.paper-grid .cell.answer {
+  display: grid;
+  place-items: center;
+  font-size: 27px;
+  line-height: 1;
+  color: var(--ink);
 }
 .paper-grid .cell.filled {
   background: var(--paper-2);
@@ -750,6 +759,9 @@ select.textlike {
   }
   .paper-grid .cell.filled {
     font-size: 14pt;
+  }
+  .paper-grid .cell.answer {
+    font-size: 16pt;
   }
 }
 @media (max-width: 640px) {

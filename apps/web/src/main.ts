@@ -31,10 +31,14 @@ function render(): void {
   );
   const h = location.hash || '#/';
   const app = document.getElementById('app')!;
-  const pm = h.match(/^#\/t\/([^/?]+)\/paper$/);
+  const pm = h.match(/^#\/t\/([^/?]+)\/(paper|key)$/);
   if (pm) {
     setNav('lib');
-    viewPaper(app, decodeURIComponent(pm[1]));
+    viewPaper(
+      app,
+      decodeURIComponent(pm[1]),
+      pm[2] === 'key' ? 'key' : 'blank'
+    );
   } else {
     const m = h.match(/^#\/t\/([^?]+)(?:\?(.*))?$/);
     if (m) {

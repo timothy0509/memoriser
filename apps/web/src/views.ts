@@ -310,7 +310,7 @@ export function viewStudy(app: HTMLElement, r: StudyRoute): void {
     '/' +
     m.total +
     '段背穩</p></div>' +
-    '<div class="btn-row" style="margin:0"><button class="btn small" id="speakAll">朗讀全文</button><button class="btn small" id="paperBtn">默書紙</button><button class="btn small" id="editT">編輯文本</button></div></div>' +
+    '<div class="btn-row" style="margin:0"><button class="btn small" id="speakAll">朗讀全文</button><button class="btn small" id="paperBtn">默書紙</button><button class="btn small" id="keyBtn">答案</button><button class="btn small" id="editT">編輯文本</button></div></div>' +
     '<div class="card rise" id="editBox" style="display:none;margin-bottom:14px"><textarea class="custom" id="editBody"></textarea>' +
     '<div class="btn-row"><button class="btn primary small" id="saveEdit">儲存</button><button class="btn small" id="cancelEdit">取消</button></div></div>' +
     '<div class="pager rise"><button class="btn small" id="prevC"' +
@@ -342,6 +342,7 @@ export function viewStudy(app: HTMLElement, r: StudyRoute): void {
     '</div><div class="card rise" id="stage"></div>';
   $('#speakAll')!.onclick = () => speak(t.body);
   $('#paperBtn')!.onclick = () => go('#/t/' + t.id + '/paper');
+  $('#keyBtn')!.onclick = () => go('#/t/' + t.id + '/key');
   $$('.pager .dot').forEach((dt) => {
     dt.onclick = () =>
       go(studyURL(t.id, +(dt as HTMLElement).dataset.i!, r.stage));
