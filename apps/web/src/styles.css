@@ -652,11 +652,6 @@ select.textlike {
   font-size: 14px;
   margin-top: 10px;
 }
-.paper-hint {
-  color: var(--muted);
-  font-size: 13px;
-  margin: 8px 0 0;
-}
 .paper-para {
   margin-top: 18px;
 }
@@ -676,29 +671,38 @@ select.textlike {
 }
 .paper-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+  grid-template-columns: repeat(auto-fill, 40px);
   gap: 5px;
 }
 .paper-grid .cell {
   aspect-ratio: 1;
   border: 1.5px solid var(--ink-soft);
   border-radius: 3px;
-  background:
-    linear-gradient(
-      to right,
-      transparent calc(50% - 0.5px),
-      #cfc6ae calc(50% - 0.5px),
-      #cfc6ae calc(50% + 0.5px),
-      transparent calc(50% + 0.5px)
-    ),
-    linear-gradient(
-      to bottom,
-      transparent calc(50% - 0.5px),
-      #cfc6ae calc(50% - 0.5px),
-      #cfc6ae calc(50% + 0.5px),
-      transparent calc(50% + 0.5px)
-    ),
-    #fff;
+  background: #fff;
+  position: relative;
+}
+.paper-grid .cell::before,
+.paper-grid .cell::after {
+  content: '';
+  position: absolute;
+  background: #cfc6ae;
+  pointer-events: none;
+}
+.paper-grid .cell::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+.paper-grid .cell::after {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+.paper-grid .cell.filled::before,
+.paper-grid .cell.filled::after {
+  display: none;
 }
 .paper-grid .cell.filled {
   background: var(--paper-2);
@@ -738,7 +742,7 @@ select.textlike {
     break-inside: avoid;
   }
   .paper-grid {
-    grid-template-columns: repeat(20, 1fr);
+    grid-template-columns: repeat(20, 8mm);
     gap: 1.2mm;
   }
   .paper-grid .cell {

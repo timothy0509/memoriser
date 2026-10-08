@@ -51,7 +51,6 @@ export function viewPaper(app: HTMLElement, tid: string): void {
     esc([t.group, t.author, t.note].filter(Boolean).join('．')) +
     '．默書紙</div>' +
     '<div class="paper-fields"><span>姓名：＿＿＿＿</span><span>班別：＿＿＿＿</span><span>日期：＿＿＿＿</span><span>分數：＿＿＿＿</span></div>' +
-    '<p class="paper-hint">每字一格，標點已印好唔使寫。段與段之間留空，唔好寫出格。</p>' +
     '</header>';
 
   paras.forEach((p, i) => {
