@@ -1,0 +1,13 @@
+{
+  "name": "@memoriser/content",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "HKDSE set texts as markdown with frontmatter, plus a dependency-free parser shared by web and future mobile",
+  "exports": {
+    ".": "./src/index.ts",
+    "./parse": "./src/parse.ts"
+  },
+  "scripts": {
+    "test": "node --test test/"
+  }
+}

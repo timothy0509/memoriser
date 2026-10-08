@@ -1,0 +1,24 @@
+{
+  "name": "memoriser",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Backshu-bang: HKDSE memorisation app monorepo (web now, mobile later)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspace @memoriser/web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@memoriser/web",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Backshu-bang web app (Vite + TypeScript). Thin UI shell over @memoriser/core and @memoriser/content.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@memoriser/content": "^2.0.0",
+    "@memoriser/core": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7"
+  }
+}
