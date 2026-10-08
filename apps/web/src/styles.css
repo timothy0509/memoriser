@@ -624,6 +624,9 @@ select.textlike {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 28px 30px 34px;
+  font-family:
+    'Kaiti TC', 'Kaiti SC', 'STKaiti', 'KaiTi', 'DFKai-SB', 'TW-Kai',
+    'Noto Serif TC', 'Songti TC', 'STSong', 'SimSun', serif;
 }
 .paper-head {
   text-align: center;
