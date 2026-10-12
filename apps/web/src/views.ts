@@ -34,9 +34,9 @@ export function studyURL(tid: string, chunk: number, stage: string): string {
 }
 
 export function toast(msg: string): void {
-  $('.toast')?.remove();
+  $('.snack')?.remove();
   const d = document.createElement('div');
-  d.className = 'toast';
+  d.className = 'snack';
   d.textContent = msg;
   document.body.appendChild(d);
   setTimeout(() => d.remove(), 2200);
@@ -90,8 +90,8 @@ export function viewHome(app: HTMLElement): void {
   const due = dueChunks();
   const last = store.s.last && getText(store.s.last.tid);
   app.innerHTML =
-    '<div class="card hero rise">' +
-    '<div class="ring" style="--p:' +
+    '<div class="pane hero-pane rise">' +
+    '<div class="dial animated" style="--p:' +
     pct +
     '"><span><b>' +
     pct +
@@ -102,21 +102,21 @@ export function viewHome(app: HTMLElement): void {
     ' / ' +
     total +
     ' 段背穩．課文轉錄自教育局《積學涵泳》。</p>' +
-    '<div class="stat-row"><div class="stat"><b>' +
+    '<div class="kpi-row"><div class="kpi"><b>' +
     store.streak() +
     '</b><small>連續溫習日數</small></div>' +
-    '<div class="stat"><b>' +
+    '<div class="kpi"><b>' +
     due.length +
     '</b><small>今日待溫段數</small></div>' +
-    '<div class="stat"><b>' +
+    '<div class="kpi"><b>' +
     store.s.errors.length +
     '</b><small>錯字本條目</small></div></div>' +
     '<div class="btn-row">' +
     (due.length
-      ? '<button class="btn primary" id="goReview">開始今日複習（' +
+      ? '<button class="btn btn-primary" id="goReview">開始今日複習（' +
         due.length +
         '段）</button>'
-      : '<button class="btn primary" id="goLib">去篇章揀嘢背</button>') +
+      : '<button class="btn btn-primary" id="goLib">去篇章揀嘢背</button>') +
     (last
       ? '<button class="btn" id="goResume">繼續：' +
         esc(last.title) +
@@ -124,7 +124,7 @@ export function viewHome(app: HTMLElement): void {
       : '') +
     '</div></div></div>' +
     '<div class="grid two" style="margin-top:16px">' +
-    '<div class="card rise" style="animation-delay:.08s"><h2>各類進度</h2>' +
+    '<div class="pane rise" style="animation-delay:.08s"><h2>各類進度</h2>' +
     Object.entries(groups)
       .map(([g, m]) => {
         const p = m.total ? Math.round((m.done / m.total) * 100) : 0;
@@ -142,9 +142,9 @@ export function viewHome(app: HTMLElement): void {
       })
       .join('') +
     '</div>' +
-    '<div class="card rise" style="animation-delay:.14s"><h2>點樣背最有效</h2>' +
+    '<div class="pane rise" style="animation-delay:.14s"><h2>點樣背最有效</h2>' +
     '<p class="sub" style="margin:0">先認讀兩遍，然後逐段遮罩自測，背到九成先默寫。標為「識晒」的段會自動排期再溫，唔使自己記。</p>' +
-    '<div class="btn-row"><button class="btn small" id="goErrors">睇錯字本</button></div></div>' +
+    '<div class="btn-row"><button class="btn btn-sm" id="goErrors">睇錯字本</button></div></div>' +
     '</div>';
   $('#goReview') && ($('#goReview')!.onclick = () => go('#/review'));
   $('#goLib') && ($('#goLib')!.onclick = () => go('#/lib'));
@@ -207,7 +207,7 @@ export function viewLib(app: HTMLElement): void {
     for (const t of list) {
       const m = mastery(t);
       html +=
-        '<a class="card clickable text-card rise" style="animation-delay:' +
+        '<a class="pane clickable lib-card rise" style="animation-delay:' +
         (d += 30) +
         'ms" href="#/t/' +
         t.id +
@@ -234,11 +234,11 @@ export function viewLib(app: HTMLElement): void {
     html += '</div>';
   }
   html +=
-    '<hr class="rule"><div class="card rise"><h2>貼上自訂文本</h2>' +
+    '<hr class="rule"><div class="pane rise"><h2>貼上自訂文本</h2>' +
     '<p class="kbd-hint">老師派的版本唔同，或者想背課外篇，貼入嚟一齊計進度。</p>' +
     '<p><input class="textlike" id="nt" placeholder="標題，例如 師說（班本）"></p>' +
     '<p><textarea class="custom" id="nb" placeholder="貼上全文……"></textarea></p>' +
-    '<p><button class="btn primary" id="addT">加入背誦</button></p></div>';
+    '<p><button class="btn btn-primary" id="addT">加入背誦</button></p></div>';
   app.innerHTML = html;
   $('#addT')!.onclick = () => {
     const title =
@@ -283,7 +283,7 @@ export function viewStudy(app: HTMLElement, r: StudyRoute): void {
   const t = getText(r.tid);
   if (!t) {
     app.innerHTML =
-      '<div class="card"><p>搵唔到呢篇。</p><p><a href="#/lib">返篇章</a></p></div>';
+      '<div class="pane"><p>搵唔到呢篇。</p><p><a href="#/lib">返篇章</a></p></div>';
     return;
   }
   const cs = bodyChunks(t);
@@ -310,10 +310,10 @@ export function viewStudy(app: HTMLElement, r: StudyRoute): void {
     '/' +
     m.total +
     '段背穩</p></div>' +
-    '<div class="btn-row" style="margin:0"><button class="btn small" id="speakAll">朗讀全文</button><button class="btn small" id="paperBtn">默書紙</button><button class="btn small" id="keyBtn">答案</button><button class="btn small" id="editT">編輯文本</button></div></div>' +
-    '<div class="card rise" id="editBox" style="display:none;margin-bottom:14px"><textarea class="custom" id="editBody"></textarea>' +
-    '<div class="btn-row"><button class="btn primary small" id="saveEdit">儲存</button><button class="btn small" id="cancelEdit">取消</button></div></div>' +
-    '<div class="pager rise"><button class="btn small" id="prevC"' +
+    '<div class="btn-row" style="margin:0"><button class="btn btn-sm" id="speakAll">朗讀全文</button><button class="btn btn-sm" id="paperBtn">默書紙</button><button class="btn btn-sm" id="keyBtn">答案</button><button class="btn btn-sm" id="editT">編輯文本</button></div></div>' +
+    '<div class="pane rise" id="editBox" style="display:none;margin-bottom:14px"><textarea class="custom" id="editBody"></textarea>' +
+    '<div class="btn-row"><button class="btn btn-primary btn-sm" id="saveEdit">儲存</button><button class="btn btn-sm" id="cancelEdit">取消</button></div></div>' +
+    '<div class="pager rise"><button class="btn btn-sm" id="prevC"' +
     (chunk <= 0 ? ' disabled' : '') +
     '>← 上一段</button>' +
     '<div class="dots">' +
@@ -323,10 +323,10 @@ export function viewStudy(app: HTMLElement, r: StudyRoute): void {
     '/' +
     cs.length +
     '段</span>' +
-    '<button class="btn small" id="nextC"' +
+    '<button class="btn btn-sm" id="nextC"' +
     (chunk >= cs.length - 1 ? ' disabled' : '') +
     '>下一段 →</button></div>' +
-    '<div class="tabs rise">' +
+    '<div class="stage-tabs rise">' +
     stages
       .map(
         ([k, lb]) =>
@@ -339,7 +339,7 @@ export function viewStudy(app: HTMLElement, r: StudyRoute): void {
           '</button>'
       )
       .join('') +
-    '</div><div class="card rise" id="stage"></div>';
+    '</div><div class="pane rise" id="stage"></div>';
   $('#speakAll')!.onclick = () => speak(t.body);
   $('#paperBtn')!.onclick = () => go('#/t/' + t.id + '/paper');
   $('#keyBtn')!.onclick = () => go('#/t/' + t.id + '/key');
@@ -412,9 +412,9 @@ function boxTag(tid: string, i: number): string {
 function rateRowHTML(): string {
   return (
     '<div class="rate-row"><span class="kbd-hint" style="align-self:center">誠實評分：</span>' +
-    '<button class="btn small" data-r="0">唔識</button>' +
-    '<button class="btn small" data-r="1">半識</button>' +
-    '<button class="btn good small" data-r="2">識晒</button></div>'
+    '<button class="btn btn-sm" data-r="0">唔識</button>' +
+    '<button class="btn btn-sm" data-r="1">半識</button>' +
+    '<button class="btn btn-success btn-sm" data-r="2">識晒</button></div>'
   );
 }
 
@@ -426,7 +426,7 @@ function refreshPagerDots(t: TextDoc, chunk: number): void {
 function stageRead(host: HTMLElement, t: TextDoc, cs: string[]): void {
   host.innerHTML =
     '<h2>認讀全文</h2><p class="kbd-hint">逐段慢讀，可以㩒喇叭聽發音。讀完一段就標熟悉，之後先去遮罩。</p>' +
-    '<div class="btn-row"><button class="btn small" id="allSeen">全部標熟悉</button></div><div id="chunks"></div>';
+    '<div class="btn-row"><button class="btn btn-sm" id="allSeen">全部標熟悉</button></div><div id="chunks"></div>';
   const box = $('#chunks', host) as HTMLElement;
   cs.forEach((c, i) => {
     const d = document.createElement('div');
@@ -440,7 +440,7 @@ function stageRead(host: HTMLElement, t: TextDoc, cs: string[]): void {
       '<div class="reader">' +
       esc(c) +
       '</div>' +
-      '<div class="btn-row"><button class="btn small sp">朗讀此段</button><button class="btn small seen">標熟悉</button></div>';
+      '<div class="btn-row"><button class="btn btn-sm sp">朗讀此段</button><button class="btn btn-sm seen">標熟悉</button></div>';
     $('.sp', d)!.onclick = () => speak(c);
     $('.seen', d)!.onclick = () => {
       const bx = store.getBox(t.id, i);
@@ -495,19 +495,19 @@ function stageCloze(
     '<h2>遮罩自測．第' +
     (i + 1) +
     '段</h2>' +
-    '<div class="controls"><label>遮罩 <input type="range" id="hl" min="10" max="85" value="' +
+    '<div class="controls"><label>遮罩 <input class="range range-primary range-xs" type="range" id="hl" min="10" max="85" value="' +
     store.s.settings.cloze +
     '"> <span id="hlv">' +
     store.s.settings.cloze +
     '%</span></label>' +
-    '<label><input type="checkbox" id="fc"' +
+    '<label><input class="checkbox checkbox-primary checkbox-sm" type="checkbox" id="fc"' +
     (store.s.settings.firstChar ? ' checked' : '') +
     '> 首字提示</label>' +
-    '<label><input type="checkbox" id="kp"' +
+    '<label><input class="checkbox checkbox-primary checkbox-sm" type="checkbox" id="kp"' +
     (store.s.settings.keepPunct ? ' checked' : '') +
     '> 保留標點</label>' +
-    '<button class="btn small" id="rehide">重新遮罩</button>' +
-    '<button class="btn small" id="spC">朗讀此段</button></div>' +
+    '<button class="btn btn-sm" id="rehide">重新遮罩</button>' +
+    '<button class="btn btn-sm" id="spC">朗讀此段</button></div>' +
     '<div class="reader" id="cz"></div><p class="kbd-hint" id="rvCount"></p>' +
     rateRowHTML();
   const paint = (): void => {
@@ -613,7 +613,7 @@ function stageRecall(
     esc(c.slice(0, 10)) +
     '……（唔使連標點，默完㩒批改）</p>' +
     '<textarea class="recall" id="ta" rows="4" placeholder="喺度默寫……"></textarea>' +
-    '<div class="btn-row"><button class="btn primary" id="chk">批改</button><button class="btn small" id="peek">睇原文</button></div>' +
+    '<div class="btn-row"><button class="btn btn-primary" id="chk">批改</button><button class="btn btn-sm" id="peek">睇原文</button></div>' +
     '<div class="result" id="rs"></div><div id="rr"></div>';
   $('#chk', host)!.onclick = () => {
     const r = compare(
@@ -670,10 +670,10 @@ function stageRecall(
 function stageExam(host: HTMLElement, t: TextDoc): void {
   host.innerHTML =
     '<h2>考試．全文默寫</h2>' +
-    '<div class="controls"><label>限時 <select class="textlike" id="tmin" style="width:auto"><option value="0">唔限</option><option value="5">5 分鐘</option><option value="10">10 分鐘</option><option value="20">20 分鐘</option></select></label>' +
+    '<div class="controls"><label>限時 <select class="select select-sm" id="tmin" style="width:auto"><option value="0">唔限</option><option value="5">5 分鐘</option><option value="10">10 分鐘</option><option value="20">20 分鐘</option></select></label>' +
     '<span class="timer" id="tmr"></span></div>' +
     '<textarea class="recall" id="full" rows="8" placeholder="喺度默寫全文……"></textarea>' +
-    '<div class="btn-row"><button class="btn primary" id="chkF">交卷批改</button></div><div class="result" id="fres"></div>';
+    '<div class="btn-row"><button class="btn btn-primary" id="chkF">交卷批改</button></div><div class="result" id="fres"></div>';
   $('#chkF', host)!.onclick = () => {
     if (examTimer) {
       clearInterval(examTimer);
@@ -752,17 +752,17 @@ export function viewReview(app: HTMLElement): void {
   const queue = dueChunks();
   if (!queue.length) {
     app.innerHTML =
-      '<div class="card rise"><h2>今日複習</h2><p>全部溫晒，聽日再嚟。去篇章超前背新嘢都得。</p><div class="btn-row"><button class="btn primary" id="bLib">去篇章</button></div></div>';
+      '<div class="pane rise"><h2>今日複習</h2><p>全部溫晒，聽日再嚟。去篇章超前背新嘢都得。</p><div class="btn-row"><button class="btn btn-primary" id="bLib">去篇章</button></div></div>';
     $('#bLib')!.onclick = () => go('#/lib');
     return;
   }
   let pos = 0;
   app.innerHTML =
-    '<div class="queue-bar rise"><h1 style="margin:0">今日複習</h1><span class="kbd-hint" id="qpos"></span></div><div class="card rise" id="qstage" style="margin-top:12px"></div>';
+    '<div class="queue-bar rise"><h1 style="margin:0">今日複習</h1><span class="kbd-hint" id="qpos"></span></div><div class="pane rise" id="qstage" style="margin-top:12px"></div>';
   const step = (): void => {
     if (pos >= queue.length) {
       ($('#qstage') as HTMLElement).innerHTML =
-        '<h2>溫完</h2><p>今日排期的段數清晒。連續溫習先記得穩。</p><div class="btn-row"><button class="btn primary" id="qHome">返主頁</button></div>';
+        '<h2>溫完</h2><p>今日排期的段數清晒。連續溫習先記得穩。</p><div class="btn-row"><button class="btn btn-primary" id="qHome">返主頁</button></div>';
       $('#qHome')!.onclick = () => go('#/');
       ($('#qpos') as HTMLElement).textContent =
         queue.length + '/' + queue.length;
@@ -793,7 +793,7 @@ export function viewErrors(app: HTMLElement): void {
   const tids = Object.keys(byText);
   if (!tids.length) {
     app.innerHTML =
-      '<div class="card rise"><h2>錯字本</h2><p>暫時係白紙。去默寫，錯的字會自動記低。</p></div>';
+      '<div class="pane rise"><h2>錯字本</h2><p>暫時係白紙。去默寫，錯的字會自動記低。</p></div>';
     return;
   }
   let html =
@@ -810,7 +810,7 @@ export function viewErrors(app: HTMLElement): void {
       .sort((a, b) => b.n - a.n)
       .slice(0, 30);
     html +=
-      '<div class="card rise" style="margin-bottom:14px"><h2>' +
+      '<div class="pane rise" style="margin-bottom:14px"><h2>' +
       esc(t ? t.title : tid) +
       '</h2>' +
       '<table class="err-table"><tr><th>錯處</th><th>次數</th><th></th></tr>' +
@@ -835,7 +835,7 @@ export function viewErrors(app: HTMLElement): void {
       '</table></div>';
   }
   html +=
-    '<div class="btn-row"><button class="btn small" id="clrErr">清空錯字本</button></div>';
+    '<div class="btn-row"><button class="btn btn-sm" id="clrErr">清空錯字本</button></div>';
   app.innerHTML = html;
   $('#clrErr')!.onclick = () => {
     store.s.errors = [];
@@ -849,39 +849,39 @@ export function viewErrors(app: HTMLElement): void {
 export function viewSettings(app: HTMLElement): void {
   const s = store.s.settings;
   app.innerHTML =
-    '<h1 class="rise">設定</h1><div class="card rise">' +
+    '<h1 class="rise">設定</h1><div class="pane rise">' +
     '<h3>分段</h3>' +
-    '<div class="controls"><label>每段句數 <select class="textlike" id="stChunk" style="width:auto"><option value="1">1 句</option><option value="2">2 句</option><option value="3">3 句</option><option value="99">成篇一段</option></select></label>' +
+    '<div class="controls"><label>每段句數 <select class="select select-sm" id="stChunk"><option value="1">1 句</option><option value="2">2 句</option><option value="3">3 句</option><option value="99">成篇一段</option></select></label>' +
     '<span class="kbd-hint">轉分段會令舊排期對唔返，要由頭排過</span></div><hr class="rule">' +
     '<h3>遮罩</h3>' +
-    '<div class="controls"><label>預設遮罩 <input type="range" id="stCloze" min="10" max="85" value="' +
+    '<div class="controls"><label>預設遮罩 <input class="range range-primary range-xs" type="range" id="stCloze" min="10" max="85" value="' +
     s.cloze +
     '"> <span id="stClozeV">' +
     s.cloze +
     '%</span></label>' +
-    '<label><input type="checkbox" id="stFirst"' +
+    '<label><input class="checkbox checkbox-primary checkbox-sm" type="checkbox" id="stFirst"' +
     (s.firstChar ? ' checked' : '') +
     '> 首字提示</label>' +
-    '<label><input type="checkbox" id="stKeep"' +
+    '<label><input class="checkbox checkbox-primary checkbox-sm" type="checkbox" id="stKeep"' +
     (s.keepPunct ? ' checked' : '') +
     '> 保留標點</label>' +
-    '<label><input type="checkbox" id="stNext"' +
+    '<label><input class="checkbox checkbox-primary checkbox-sm" type="checkbox" id="stNext"' +
     (s.autoNext ? ' checked' : '') +
     '>評分後自動下一段</label></div><hr class="rule">' +
     '<h3>默寫</h3>' +
-    '<div class="controls"><label><input type="checkbox" id="stIg"' +
+    '<div class="controls"><label><input class="checkbox checkbox-primary checkbox-sm" type="checkbox" id="stIg"' +
     (s.ignorePunct ? ' checked' : '') +
     '>忽略標點計分</label></div><hr class="rule">' +
     '<h3>朗讀同字體</h3>' +
-    '<div class="controls"><label>聲 <select class="textlike" id="stVoice" style="width:auto;max-width:280px"></select></label>' +
-    '<label>語速 <input type="range" id="stRate" min="50" max="120" value="' +
+    '<div class="controls"><label>聲 <select class="select select-sm" id="stVoice" style="max-width:280px"></select></label>' +
+    '<label>語速 <input class="range range-primary range-xs" type="range" id="stRate" min="50" max="120" value="' +
     Math.round(s.rate * 100) +
     '"></label>' +
-    '<label>字體 <input type="range" id="stFs" min="16" max="26" value="' +
+    '<label>字體 <input class="range range-primary range-xs" type="range" id="stFs" min="16" max="26" value="' +
     s.fontSize +
     '"></label></div><hr class="rule">' +
     '<h3>備份</h3>' +
-    '<div class="btn-row"><button class="btn small" id="expBtn">匯出進度</button><label class="btn small" style="cursor:pointer">匯入進度<input type="file" id="impFile" accept="application/json" style="display:none"></label><button class="btn small" id="wipeBtn">清除全部進度</button></div>' +
+    '<div class="btn-row"><button class="btn btn-sm" id="expBtn">匯出進度</button><label class="btn btn-sm" style="cursor:pointer">匯入進度<input type="file" id="impFile" accept="application/json" style="display:none"></label><button class="btn btn-sm" id="wipeBtn">清除全部進度</button></div>' +
     '</div>';
   ($('#stChunk') as HTMLSelectElement).value = String(s.chunkSize);
   ($('#stChunk') as HTMLSelectElement).onchange = (e) => {

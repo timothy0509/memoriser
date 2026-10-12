@@ -17,7 +17,7 @@ export function viewPaper(
   const t = getText(tid) || texts[0];
   if (!t) {
     app.innerHTML =
-      '<div class="card"><p>未有篇章。</p><p><a href="#/lib">返篇章</a></p></div>';
+      '<div class="pane"><p>未有篇章。</p><p><a href="#/lib">返篇章</a></p></div>';
     return;
   }
   const paras = dictationOf(t.body);
@@ -26,16 +26,16 @@ export function viewPaper(
   let html =
     '<div class="paper-toolbar rise">' +
     '<div class="btn-row" style="margin:0">' +
-    '<button class="btn small" id="paperBack">← 返去背誦</button>' +
-    '<button class="btn small" id="paperBlank"' +
+    '<button class="btn btn-sm" id="paperBack">← 返去背誦</button>' +
+    '<button class="btn btn-sm" id="paperBlank"' +
     (mode === 'blank' ? ' disabled' : '') +
     '>默書紙</button>' +
-    '<button class="btn small" id="paperKey"' +
+    '<button class="btn btn-sm" id="paperKey"' +
     (mode === 'key' ? ' disabled' : '') +
     '>答案</button>' +
-    '<button class="btn primary small" id="paperPrint">列印 / 存為 PDF</button>' +
+    '<button class="btn btn-primary btn-sm" id="paperPrint">列印 / 存為 PDF</button>' +
     '</div>' +
-    '<div class="controls" style="margin:0"><label>篇章 <select class="textlike" id="paperPick" style="width:auto;max-width:260px">' +
+    '<div class="controls" style="margin:0"><label>篇章 <select class="select select-sm" id="paperPick" style="max-width:260px">' +
     texts
       .map(
         (x) =>
